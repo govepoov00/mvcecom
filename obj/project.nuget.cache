@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "9+lY0jfotmL0+MapcTMZHfFIroZUw8wGgq/UW5YtjJSEh4mAC74whbW7howP5tcA2cs/XnUm1M1rwu0Br6bNEg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\govep\\Desktop\\Work\\Digital Skills\\Sessions\\Session14 28092022 - 29092022 - C#\\mvcecom\\mvcecom.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\govep\\.nuget\\packages\\mysqlconnector\\0.61.0\\mysqlconnector.0.61.0.nupkg.sha512",
+    "C:\\Users\\govep\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

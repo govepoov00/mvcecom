@@ -1,0 +1,95 @@
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+
+@section Scripts{
+     
+    <script src="/js/jquery.store.js"></script>
+    
+}    
+
+
+    
+    <div id="nav-details">
+        <div id="nav-details-content"></div>
+     </div>
+   
+    
+       
+    <section id="cart">
+        <div id="site">
+            <header id="masthead">
+            </header>
+            <div id="content">
+                <h1>Your Shopping Cart</h1>
+                <form id="shopping-cart" action="cart.html" method="post">
+                    <table class="shopping-cart">
+                        <thead>
+                            <tr>
+                                <th scope="col" colspan="2" style="text-align: center;">Item</th>
+                                <th scope="col" style="text-align: center;">Qty</th>
+                                <th scope="col" style="text-align: center;">Price</th>
+                                <th scope="col" style="text-align: center;">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <p id="sub-total">
+                        <strong>Sub Total</strong>: <span id="stotal"></span>
+                    </p>
+                    <ul id="shopping-cart-actions">
+                        
+                        <li>
+                         
+                        <input type = "button" name="update" id="update-cart" onclick = "updateCart();" class="btn" value="Update Cart" disabled="disabled" style="text-align: center;
+                        color: white;
+                        background: #294db1;
+                        margin-bottom: 0px; height: 30px;
+                        border-radius: 4px;
+                        border: 1px solid #a00;
+                        text-align: center;
+                        display: inline-block;
+                        font: 1em 'PT Serif', serif;
+                        padding: 0.3em 1em;" />
+                        
+                    </li>
+                    <li>
+                        <input type="button" name="delete" id="empty-cart" onclick = "emptyCart();" class="btn" value="Empty Cart" disabled="disabled" style="text-align: center;
+                        color: white;
+                        background: #294db1;
+                        margin-bottom: 0px; height: 30px;
+                        border-radius: 4px;
+                        border: 1px solid #a00;
+                        text-align: center;
+                        display: inline-block;
+                        font: 1em 'PT Serif', serif;
+                        padding: 0.3em 1em;"/>
+                    </li> 
+                    <li>
+                            <a href='@Url.Action("Product", "Home")' class="btn" style="background-color:#294db1">Continue Shopping</a>
+                    </li>
+                    <li>
+                        <input type="button" onclick=location.href='@Url.Action("Checkout", "Home")' value="Go To Checkout" class="btn" id="checkout" disabled="disabled" style="text-align: center;
+                        color: white;
+                        background: #294db1;
+                        margin-bottom: 0px; height: 30px;
+                        border-radius: 4px;
+                        border: 1px solid #a00;
+                        text-align: center;
+                        display: inline-block;
+                        font: 1em 'PT Serif', serif;
+                        padding: 0.3em 1em;"/>
+
+                    </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+
+  </section>
+       
+
+

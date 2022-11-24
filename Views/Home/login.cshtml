@@ -1,0 +1,203 @@
+@{
+    ViewData["Title"] = "Login";
+}
+
+@section Styles {
+    <link href="/css/login.css" rel="stylesheet" type="text/css" />
+}
+
+   
+    <div id="nav-details">
+        <div id="nav-details-content"></div>
+     </div> 
+     
+    <div class="full-page">
+        
+   
+        <div id='login-form' class='login-page'>
+            <div class="form-box">
+                <div class='button-box'>
+                    <div id='btn'></div>
+                    <button type='button' onclick='login()' class='toggle-btn'>Log In</button>
+                    <button type='button' onclick='register()' class='toggle-btn'>Register</button>
+                </div>
+                <div id="login-form">
+                    <form id='login' class='input-group-login'>
+                        <input type='text' class='input-field' placeholder='Email Id' name='email' id='email' required>
+                        <input type='password' class='input-field' placeholder='Enter Password' name='pass' id='pass' required>
+                        <input type='checkbox' class='check-box' name="rpass" id="rpass"><span style="color: white">Remember Password</span>
+                        <button type='submit' class='login-btn' id='login-btn'>Log in</button>
+                        <div id="login-error">
+
+                        </div>
+                    </form>
+                    
+                </div>
+                
+                    <form id='register' class='input-group-register'>
+                        <input type='text' class='input-field' placeholder='First Name' name='fname' id='fname' required>
+                        <input type='text' class='input-field' placeholder='Last Name ' name='lname' id='lname' required>
+                        <input type='email' class='input-field' placeholder='Email Id' name='rmail' id='rmail' data-rule-email="true" required>
+                        <input type='password' class='input-field' placeholder='Enter Password' name='pass1' id='pass1' required>
+                        <input type='password' class='input-field' placeholder='Confirm Password' name='pass2' id='pass2' required data-rule-equalTo='#pass1' >
+                        <input type='checkbox' class='check-box' name='terms' required><span style="color: white">I agree to the terms and conditions</span>
+                        <div id="register-form">
+                        <button type='submit' class='register-btn' id="reg-btn">Register</button>
+                        </div> 
+                    </form>
+                       
+            </div>
+           
+            
+        </div>
+    </div>
+    <!--script type="text/javascript" src="/js/login.js"></script-->
+
+    <script>
+        this.storage = sessionStorage; // shortcut to the sessionStorage object
+
+self.storage.setItem( "loggedin", 0 );
+self.storage.setItem( "loggeduser", "" );
+
+var password = document.getElementById("pass1")
+  , confirm_password = document.getElementById("pass2");
+
+function validatePassword(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Passwords Don't Match");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}
+
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
+
+
+
+  $( "#register" ).on( "submit", function(e) {
+      
+  
+   const data = new FormData(e.target);
+  const value = Object.fromEntries(data.entries());
+  var model= JSON.stringify(value); 
+    
+    console.info("Model"+model);
+    
+    jQuery.support.cors = true;
+    $.ajax({
+      type: 'POST',
+      url: "/Login/Register/",
+      contentType: 'application/json',
+      data: model, 
+      success: function () {
+               
+        $("#register-form").html("<div id='message'></div>");
+        $("#message")
+          .html("<h3>Registration Successfull!</h3>")
+          .append("<p>Please continue to login.</p>")
+          .hide()
+          .fadeIn(2500, function () {
+            $("#message")
+          });
+        
+                 
+      },
+     
+
+      statusCode: { // <- Add this property
+        500: function() {
+            $("#register-form").html("<div id='message'></div>");
+            $("#message")
+              .html("<h3>User already exists!</h3>")
+              .append("<p>Please continue to login.</p>")
+              .hide()
+              .fadeIn(2500, function () {
+                $("#message")
+              });
+            
+
+        }
+        
+    }
+      
+    });
+      
+    e.preventDefault();
+  });
+
+
+
+  $( "#login" ).on( "submit", function(e) {
+ 
+    //var dataString = $(this).serialize();
+    const data = new FormData(e.target);
+    const value = Object.fromEntries(data.entries());
+    var model= JSON.stringify(value);  
+    //alert(dataString); return false;
+ 
+    $.ajax({
+      type: "POST",
+      url: "/Login/Login/",
+      contentType: 'application/json',
+      data: model,
+      success: function () {
+        self.storage.setItem( "loggedin", 1 );
+        this.$useremail = document.getElementById( "email" ).value; // Element that displays the subtotal charges
+        self.storage.setItem( "loggeduser", this.$useremail );   
+        $("#login-error").html("<div id='message'></div>");
+        
+        $("#message")
+          .html("<h3>Login Successfull!</h3>")
+          .append("<p>Navigating to home page</p>")
+          .hide()
+          .fadeIn(200, function () {
+            $("#message")
+          });
+          
+          window.location.href = '@Url.Action("Index", "Home")';
+                 
+      },
+
+      statusCode: { // <- Add this property
+        500: function() {
+            $("#login-error").html("<div id='message'></div>");
+            $("#message")
+              .html("<h3>Invalid Username and password combination</h3>")
+              .append("<p>Please try to login again.</p>")
+              .hide()
+              .fadeIn(200, function () {
+                $("#message")
+              });
+            
+
+        }
+    }
+      
+    });
+ 
+    e.preventDefault();
+  });
+
+
+
+
+    </script>
+
+<script>
+        var x = document.getElementById('login');
+        var y = document.getElementById('register');
+        var z = document.getElementById('btn');
+        function register() {
+            x.style.left = '-400px';
+            y.style.left = '50px';
+            z.style.left = '110px';
+        }
+        function login() {
+            x.style.left = '50px';
+            y.style.left = '450px';
+            z.style.left = '0px';
+        }
+   
+    </script>
+

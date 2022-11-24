@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" >
+    <link rel="icon" href="/images/products/logo-icon.png" type="image/x-icon" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equip="X-UA-compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    @RenderSection("Styles", false)
+</head>
+<body>
+   
+<script>
+(function( $ ) {
+    $.Navbar = function( element ) {
+        this.$element = $( element );
+        this.init();
+    };
+    $.Navbar.prototype = {
+        init: function() {
+          // Properties
+          this.cartPrefix = "Furniture-"; // Prefix string to be prepended to the cart's name in the session storage
+            this.cartName = this.cartPrefix + "cart"; // Cart name in the session storage
+            this.storage = sessionStorage; // shortcut to the sessionStorage object
+          this.$navhtml = this.$element.find( "#nav-details-content" ); 
+          //this.loggedin = "loggedin";
+          // Method invocation
+          this.navCreate();
+        },
+
+      // Public methods
+        navCreate: function() {
+          var loggedin = this.storage.getItem("loggedin");
+        //var html ="<div class='container'>";
+       var html = "<marquee direction='right' id='marq' behavior='alternate'>We Ship Within 24 Hours | Free Delivery On All Orders Over R550* |  Orders Delivered Within 2 - 4 Working Days</marquee>";
+        
+        html += "<nav class='navbar navbar-expand-lg navbar-light'>";
+        html += "<ul class='navbar-brand' id='logo'>";
+        html += "<a href='@Url.Action("Index", "Home")' alt='Logo' style='background-color: #294db1;'>";
+        html += "<img src='/images/products/logo-icon.png' width='90' height='90'>";
+        html += "</a>";
+        html += "</ul>";
+        html += "<ul class='navbar-nav ml-auto'>";
+        html += "<li class='nav-item'>";
+        html += "<a style='color:white;' class='nav-link' href='@Url.Action("Index", "Home")'>Home";
+        html += "</a>";
+        html += "</li>";
+        
+        html += "<li class='nav-item'>";
+        html += "<a style='color:white;' class='nav-link' href='@Url.Action("Product", "Home")'>Products";
+        html += "</a>";
+        html += "</li>";
+        
+                
+        html += "<li class='nav-item'>";
+        html += "<a style='color:white;' class='nav-link' href='@Url.Action("About", "Home")'>About Us</a>";
+        html += "</li>";
+        html += "<li class='nav-item'>";
+        html += "<a style='color:white;' class='nav-link' href='@Url.Action("Contact", "Home")'>Contact</a>";
+        html += "</li>";
+        html += "<li class='nav-item'>";
+
+
+        if(loggedin=='0' || loggedin ==null)
+        {
+        html += "<a style='color:white;' class='nav-link' href='@Url.Action("Login", "Home")'>Login/Register</a>";
+        }
+        else
+        {
+        html += "<a style='color:white;' class='nav-link' href='#' id='logoutuser'>Logout</a>";
+        
+        }
+        html += "</li>";
+
+       // html += "<li class='nav-item'>";
+        //html += "<div id='nav-cart-count-container'>";
+        //html += "<span id='nav-cart-count' aria-hidden='true' class='nav-cart-count nav-cart-0 nav-progressive-attribute nav-progressive-content'>"+this.getCartSize()+"</span>";
+        //html += "<span class='nav-cart-icon nav-sprite'></span>";
+       // html += "</div>";
+       // html += "<a style='color:white;' class='nav-link' href='./cart.html'>Cart</a>";
+       // html += "</li>";
+       html += "<li class='nav-item'>";
+        html += "<a href='@Url.Action("Cart", "Home")'>";
+        
+        html += "<div class='container' >";
+        html += "<img src='/images/cart.png'>"
+        if(this.getCartSize()<10){
+        html += "<h5 class='cartsize'>"+this.getCartSize()+"</h5>";
+        }
+        else{
+        html += "<h5 class='cartsize2'>"+this.getCartSize()+"</h5>";
+        }
+        html += "<span aria-hidden='true' class='nav-line-2'>Cart<span class='nav-icon nav-arrow'></span>";
+       
+        html += "</div>";
+        
+        html += "</a>";
+        html += "</li>";
+
+
+        html += "</ul>";
+        html += "</nav>";
+        //html += "</div>";  
+        this.$navhtml[0].innerHTML = html; 
+        if(loggedin=='1')
+        {
+          document.getElementById('logoutuser').onclick = function () {
+            window.location.href = "@Url.Action("Login", "Home")";
+            return false;
+        }
+        }
+        
+  
+      },
+
+      getCartSize: function() {
+        var self = this;
+        var cartsize = 0;
+        try {
+          cartsize = self._toJSONObject( self.storage.getItem( self.cartName ) ).items.length;
+        } catch (error) {
+          cartsize = 0;
+        }
+        
+        
+        return cartsize;
+        
+    },
+
+   
+     /* Converts a JSON string to a JavaScript object
+         * param str String the JSON string
+         * returns obj Object the JavaScript object
+         */
+        
+     _toJSONObject: function( str ) {
+      var obj = JSON.parse( str );
+      return obj;
+  }
+
+      
+
+    };
+    $(function() {
+      var navbar = new $.Navbar( "#nav-details" );
+  });
+
+  
+    
+})( jQuery );
+</script>
+
+     @RenderBody()
+     @await RenderSectionAsync("Scripts", required: false)
+
+
+ <script>
+ var path = window.location.pathname;
+var page = path.split("/").pop();
+console.log( page );
+if(page != "Login")
+{   
+ document.write(`
+<section id="footer" style="margin-top: 40px; background-color: rgb(252, 250, 250); padding-top: 30px;">
+                <footer class="container">
+                    <div class="footer-middle">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-s6 col-lg-3">
+                                    <div class="widget widget-about">
+                                        <img src="../images/products/logo-icon.png" class="footer-logo" alt="Footer Logo"
+                                            width="50" height="50">
+                                        <p>The best shop for toys that offer quality and a money back guarentee if you are not satisfied. </p>
+    
+                                        <div class="widget-call">
+                                            <i class="icon-phone"></i>
+                                            Got Questions? Call us 24/7
+                                            <a href="tel:#" style="color: #FCB941;">+2780022222</a>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-6 col-lg-3">
+                                    <div class="widget">
+                                        <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+    
+    <ul class="widget-list">
+     <li><a href='@Url.Action("About", "Home")' style="color: #FCB941;">About Company</a></li>
+    <li><a href="#" style="color: #FCB941;">Our Services</a></li>
+    <li><a href="#" style="color: #FCB941;">How to shop</a></li>
+    <li><a href="faq.html" style="color: #FCB941;">FAQ</a></li>
+    <li><a href='@Url.Action("Contact", "Home")' style="color: #FCB941;">Contact us</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-6 col-lg-3">
+                                    <div class="widget">
+                                        <h4>Customer Service</h4>
+    
+    <ul class="widget-list">
+    <li><a href="#" style="color: #FCB941;">Payment Methods</a></li>
+    <li><a href="#" style="color: #FCB941;">Money-back guarantee!</a></li>
+    <li><a href="#" style="color: #FCB941;">Returns</a></li>
+    <li><a href="#" style="color: #FCB941;">Shipping</a></li>
+     <li><a href="#" style="color: #FCB941;">Terms and conditions</a></li>
+    <li><a href="#" style="color: #FCB941;">Privacy Policy</a></li>
+    </ul>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-6 col-lg-3">
+                                    <div class="widget">
+                                        <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+    
+    <ul class="widget-list">
+    <li><a href='@Url.Action("Login", "Home")' style="color: #FCB941;">Sign In</a></li>
+    <li><a href="cart.html" style="color: #FCB941;">View Cart</a></li>
+    <li><a href="#" style="color: #FCB941;">My Wishlist</a></li>
+    <li><a href="#" style="color: #FCB941;">Track My Order</a></li>
+    <li><a href="#" style="color: #FCB941;">Help</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div>
+                        <div class="container">
+                            <p style="text-align:center;">Copyright © 2022 Digital Skills. All Rights Reserved.</p>
+                            <figure style="float: right;">
+                                <img src="../images/products/payments.png" alt="Payment methods" width="272" height="20">
+                            </figure>
+                        </div>
+                    </div>
+                </footer>
+            </section>
+`); 
+}  
+ </script>   
+
+</body>
+</html>
+
