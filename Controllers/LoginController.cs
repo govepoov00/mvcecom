@@ -9,21 +9,14 @@ namespace MvcMovie.Controllers
 {
     public class LoginController : Controller
     {
-       
         static string connectionstring = "server=localhost;port=3306;uid=root;" +
         "pwd=root123; database=kidzdb; charset=utf8; sslmode=none; AllowPublicKeyRetrieval=true; Allow User Variables=true;"; //added allowpublic...
         static MySqlConnection conn = new MySqlConnection(connectionstring);
-
-     
       
         [HttpPost]
         public ActionResult Register([FromBody] UserRegModel dataIn)
         {
           Console.WriteLine("Connect to MySql Database. \n");
-                  
-         
-        
-           // using (conn)
             {
                 try
                 {
@@ -35,7 +28,7 @@ namespace MvcMovie.Controllers
                     string lname = dataIn.lname; 
                     string email = dataIn.rmail;  
                     string password = dataIn.pass1;  
-                   // reader.Close();
+                   
                     command.CommandText=$"Insert into userlogin (firstname, lastname, email, pass) values('{fname}','{lname}','{email}','{password}');";
                     MySqlDataReader reader = command.ExecuteReader();
                     reader.Close();
@@ -59,10 +52,6 @@ namespace MvcMovie.Controllers
         public ActionResult Login([FromBody] UserLoginModel dataIn)
         {
           Console.WriteLine("Connect to MySql Database. \n");
-                  
-         // return Json(new {dataIn, DateTime = DateTime.Now.ToShortDateString() });
-        
-           // using (conn)
             {
                 try
                 {
@@ -74,7 +63,6 @@ namespace MvcMovie.Controllers
                     command.CommandText=$"SELECT email,pass from userlogin where email = '{email}' and pass = '{password}'";
                     Console.WriteLine($"User:'{email}' and password:'{password}'");
                     MySqlDataReader reader = command.ExecuteReader();
-                
                                        
                     if (reader.HasRows)
                     {
@@ -99,9 +87,7 @@ namespace MvcMovie.Controllers
                     System.Console.WriteLine("Connection is : " + conn.State.ToString() + Environment.NewLine);
                     return StatusCode(500);
                 }finally {
-                    //System.Console.WriteLine("Press any key to Exit...");
-                    //
-                    //Console.ReadKey();
+                    
                 }
             }
         }
